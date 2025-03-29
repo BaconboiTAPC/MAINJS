@@ -1,4 +1,4 @@
-javascript:(function () {
+javascjavascript:(function () {
     // Show popup message before running the script
     alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS OF CRAFTS ↓\ncredited by BACONBOI ♡");
 
@@ -15,7 +15,7 @@ javascript:(function () {
         const gui = document.createElement("div");
         gui.style.position = "fixed";
         gui.style.top = "10px";
-        gui.style.right = "10px";
+        gui.style.left = "10px"; // Changed to left side
         gui.style.padding = "10px";
         gui.style.background = "rgba(0, 0, 0, 0.8)";
         gui.style.color = "white";
@@ -25,14 +25,6 @@ javascript:(function () {
         gui.style.display = "flex";
         gui.style.flexDirection = "column";
         gui.style.gap = "10px";
-
-        // SoundCloud embed code
-        const soundCloudPlayer = document.createElement("iframe");
-        soundCloudPlayer.setAttribute("width", "100%");
-        soundCloudPlayer.setAttribute("height", "166");
-        soundCloudPlayer.setAttribute("scrolling", "no");
-        soundCloudPlayer.setAttribute("frameborder", "no");
-        soundCloudPlayer.setAttribute("src", "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/phonkmp3/dream2&color=ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false");
 
         // Start/Stop Button
         const startButton = document.createElement("button");
@@ -89,8 +81,79 @@ javascript:(function () {
         creditedByDiv.style.fontStyle = "italic";
         creditedByDiv.innerHTML = "credited by BACONBOI ♡";
 
-        // Append all elements
-        gui.appendChild(soundCloudPlayer); // Embed SoundCloud Player
+        // Create the SoundCloud embeds for the songs
+        const song1 = document.createElement("div");
+        song1.innerHTML = `
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1489983991&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+            <div style="font-size: 10px; color: #cccccc;">
+                <a href="https://soundcloud.com/phonkmp3" title="PHONK.MP3" target="_blank" style="color: #cccccc; text-decoration: none;">PHONK.MP3</a> · 
+                <a href="https://soundcloud.com/phonkmp3/on-the-jacket" title="ON THE JACKET" target="_blank" style="color: #cccccc; text-decoration: none;">ON THE JACKET</a>
+            </div>
+        `;
+        const song2 = document.createElement("div");
+        song2.innerHTML = `
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1938613391&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+            <div style="font-size: 10px; color: #cccccc;">
+                <a href="https://soundcloud.com/jair-zubizarreta" title="Jair Zubizarreta" target="_blank" style="color: #cccccc; text-decoration: none;">Jair Zubizarreta</a> · 
+                <a href="https://soundcloud.com/jair-zubizarreta/chisme-phonk-x-o-melhor-no-que" title="Chisme Phonk x O Melhor no Que Faz 3.0 (Full TikTok Remix) [made by purple drip boy].mp3" target="_blank" style="color: #cccccc; text-decoration: none;">Chisme Phonk x O Melhor no Que Faz 3.0 (Full TikTok Remix) [made by purple drip boy].mp3</a>
+            </div>
+        `;
+        const song3 = document.createElement("div");
+        song3.innerHTML = `
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1826472747&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+            <div style="font-size: 10px; color: #cccccc;">
+                <a href="https://soundcloud.com/tio-sam-858658914" title="Tio sam" target="_blank" style="color: #cccccc; text-decoration: none;">Tio sam</a> · 
+                <a href="https://soundcloud.com/tio-sam-858658914/phonk-ultra-vol-2-320-mp3" title="Phonk Ultra Vol 2 (320).mp3" target="_blank" style="color: #cccccc; text-decoration: none;">Phonk Ultra Vol 2 (320).mp3</a>
+            </div>
+        `;
+
+        // Store the songs in an array
+        const songs = [song1, song2, song3];
+        let currentSongIndex = 0;
+
+        // Create song switching buttons (left & right arrows)
+        const switchLeftButton = document.createElement("button");
+        switchLeftButton.innerText = "<";
+        switchLeftButton.style.padding = "5px 10px";
+        switchLeftButton.style.fontSize = "18px";
+        switchLeftButton.style.cursor = "pointer";
+        switchLeftButton.style.border = "none";
+        switchLeftButton.style.background = "transparent";
+        switchLeftButton.style.color = "white";
+        switchLeftButton.onclick = function () {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            updateSong();
+        };
+
+        const switchRightButton = document.createElement("button");
+        switchRightButton.innerText = ">";
+        switchRightButton.style.padding = "5px 10px";
+        switchRightButton.style.fontSize = "18px";
+        switchRightButton.style.cursor = "pointer";
+        switchRightButton.style.border = "none";
+        switchRightButton.style.background = "transparent";
+        switchRightButton.style.color = "white";
+        switchRightButton.onclick = function () {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            updateSong();
+        };
+
+        // Function to update the displayed song
+        function updateSong() {
+            const songContainer = document.getElementById("songContainer");
+            songContainer.innerHTML = "";
+            songContainer.appendChild(songs[currentSongIndex]);
+        }
+
+        // Song container for dynamic updating
+        const songContainer = document.createElement("div");
+        songContainer.id = "songContainer";
+        songContainer.appendChild(songs[currentSongIndex]);
+
+        // Append all elements to the GUI
+        gui.appendChild(songContainer);
+        gui.appendChild(switchLeftButton);
+        gui.appendChild(switchRightButton);
         gui.appendChild(startButton);
         gui.appendChild(clearButton);
         gui.appendChild(statusDisplay);
