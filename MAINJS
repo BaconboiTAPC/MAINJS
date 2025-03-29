@@ -1,4 +1,4 @@
-javascjavascript:(function () {
+javascript:(function () {
     // Show popup message before running the script
     alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS OF CRAFTS ↓\ncredited by BACONBOI ♡");
 
@@ -238,4 +238,5 @@ javascjavascript:(function () {
 
     createGUI();
 })();
+
 
