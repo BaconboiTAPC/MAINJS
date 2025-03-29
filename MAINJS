@@ -26,6 +26,14 @@ javascript:(function () {
         gui.style.flexDirection = "column";
         gui.style.gap = "10px";
 
+        // SoundCloud embed code
+        const soundCloudPlayer = document.createElement("iframe");
+        soundCloudPlayer.setAttribute("width", "100%");
+        soundCloudPlayer.setAttribute("height", "166");
+        soundCloudPlayer.setAttribute("scrolling", "no");
+        soundCloudPlayer.setAttribute("frameborder", "no");
+        soundCloudPlayer.setAttribute("src", "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/phonkmp3/dream2&color=ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false");
+
         // Start/Stop Button
         const startButton = document.createElement("button");
         startButton.innerText = "Start Auto-Crafter";
@@ -82,6 +90,7 @@ javascript:(function () {
         creditedByDiv.innerHTML = "credited by BACONBOI ♡";
 
         // Append all elements
+        gui.appendChild(soundCloudPlayer); // Embed SoundCloud Player
         gui.appendChild(startButton);
         gui.appendChild(clearButton);
         gui.appendChild(statusDisplay);
