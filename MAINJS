@@ -1,5 +1,7 @@
+javascript:(function () {
+    // Show popup message before running the script
+    alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS OF CRAFTS ↓\ncredited by BACONBOI ♡");
 
-(function () {
     console.log("🚀 Infinite Craft Auto-Combiner (Efficient Item Tracker) Activated!");
 
     let combinationCount = 0;
@@ -34,7 +36,6 @@
         startButton.style.borderRadius = "5px";
         startButton.style.background = "green";
         startButton.style.color = "white";
-
         startButton.onclick = function () {
             running = !running;
             if (running) {
@@ -58,7 +59,6 @@
         clearButton.style.borderRadius = "5px";
         clearButton.style.background = "blue";
         clearButton.style.color = "white";
-
         clearButton.onclick = function () {
             clearCanvas();
         };
@@ -70,10 +70,24 @@
         statusDisplay.innerHTML = `
             <p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>
         `;
-        
+
+        // Add arrow and credited by text
+        const arrowDiv = document.createElement("div");
+        arrowDiv.style.fontSize = "30px";
+        arrowDiv.innerHTML = "↓"; // Down arrow symbol
+
+        const creditedByDiv = document.createElement("div");
+        creditedByDiv.style.fontSize = "14px";
+        creditedByDiv.style.fontStyle = "italic";
+        creditedByDiv.innerHTML = "credited by BACONBOI ♡";
+
+        // Append all elements
         gui.appendChild(startButton);
         gui.appendChild(clearButton);
         gui.appendChild(statusDisplay);
+        gui.appendChild(arrowDiv);
+        gui.appendChild(creditedByDiv);
+
         document.body.appendChild(gui);
     }
 
@@ -91,22 +105,18 @@
         const rect = item.getBoundingClientRect();
         const startX = rect.left + rect.width / 2;
         const startY = rect.top + rect.height / 2;
-
         item.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: startX, clientY: startY }));
         document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: targetX, clientY: targetY }));
         document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: targetX, clientY: targetY }));
-
         console.log(`🔄 Moved item to (${targetX}, ${targetY})`);
     }
 
     function clearCanvas() {
         console.log("🧹 Clicking 'Clear All Items on the Canvas'...");
-
         const clearButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Clear"));
         if (clearButton) {
             clearButton.click();
-            console.log("🖱️ Clicked Clear button!");
-
+            console.log("🖤 Clicked Clear button!");
             setTimeout(() => {
                 const yesButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Yes"));
                 if (yesButton) {
@@ -115,7 +125,6 @@
                 }
             }, 100);
         }
-
         combinationCount = 0; // Reset counter
         updateStatus();
     }
@@ -126,21 +135,17 @@
 
     function autoCombine() {
         if (!running) return;
-
         const items = getDraggableItems();
         totalItems = items.length;
-
         if (items.length < 2) {
             console.warn("⚠️ Not enough items to combine!");
             return;
         }
-
         const center = getCraftingPosition();
-        
+
         items.slice(0, 5).forEach(item => {
             simulateDragAndDrop(item, center.x, center.y);
             craftedItems++;
-
             if (craftedItems >= 40) {
                 clearCanvas(); // Auto-clear after 40 crafts
             }
@@ -161,3 +166,4 @@
 
     createGUI();
 })();
+
