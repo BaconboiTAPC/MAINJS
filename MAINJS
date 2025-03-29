@@ -1,2 +1,163 @@
 
-javascript:(function () {    console.log("%F0%9F%9A%80 Infinite Craft Auto-Combiner (Efficient Item Tracker) Activated!");    let combinationCount = 0;    let running = false;    let interval = null;    let totalItems = 0;    let craftedItems = 0;    // Create GUI    function createGUI() {        const gui = document.createElement("div");        gui.style.position = "fixed";        gui.style.top = "10px";        gui.style.right = "10px";        gui.style.padding = "10px";        gui.style.background = "rgba(0, 0, 0, 0.8)";        gui.style.color = "white";        gui.style.borderRadius = "10px";        gui.style.fontFamily = "Arial, sans-serif";        gui.style.zIndex = "9999";        gui.style.display = "flex";        gui.style.flexDirection = "column";        gui.style.gap = "10px";        // Start/Stop Button        const startButton = document.createElement("button");        startButton.innerText = "Start Auto-Crafter";        startButton.style.padding = "10px";        startButton.style.fontSize = "14px";        startButton.style.cursor = "pointer";        startButton.style.border = "none";        startButton.style.borderRadius = "5px";        startButton.style.background = "green";        startButton.style.color = "white";        startButton.onclick = function () {            running = !running;            if (running) {                startButton.innerText = "Stop Auto-Crafter";                startButton.style.background = "red";                startAutoCrafting();            } else {                startButton.innerText = "Start Auto-Crafter";                startButton.style.background = "green";                stopAutoCrafting();            }        };        // Instant Clear Button        const clearButton = document.createElement("button");        clearButton.innerText = "Clear Items Instantly";        clearButton.style.padding = "10px";        clearButton.style.fontSize = "14px";        clearButton.style.cursor = "pointer";        clearButton.style.border = "none";        clearButton.style.borderRadius = "5px";        clearButton.style.background = "blue";        clearButton.style.color = "white";        clearButton.onclick = function () {            clearCanvas();        };        // Items Crafted Display        const statusDisplay = document.createElement("div");        statusDisplay.style.color = "white";        statusDisplay.style.fontSize = "16px";        statusDisplay.innerHTML = `            <p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>        `;                gui.appendChild(startButton);        gui.appendChild(clearButton);        gui.appendChild(statusDisplay);        document.body.appendChild(gui);    }    function getDraggableItems() {        return Array.from(document.querySelectorAll('.item'));    }    function getCraftingPosition() {        const screenWidth = window.innerWidth;        const screenHeight = window.innerHeight;        return { x: screenWidth / 2, y: screenHeight / 2 };    }    function simulateDragAndDrop(item, targetX, targetY) {        const rect = item.getBoundingClientRect();        const startX = rect.left + rect.width / 2;        const startY = rect.top + rect.height / 2;        item.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: startX, clientY: startY }));        document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: targetX, clientY: targetY }));        document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: targetX, clientY: targetY }));        console.log(`%F0%9F%94%84 Moved item to (${targetX}, ${targetY})`);    }    function clearCanvas() {        console.log("%F0%9F%A7%B9 Clicking 'Clear All Items on the Canvas'...");        const clearButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Clear"));        if (clearButton) {            clearButton.click();            console.log("%F0%9F%96%B1%EF%B8%8F Clicked Clear button!");            setTimeout(() => {                const yesButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Yes"));                if (yesButton) {                    yesButton.click();                    console.log("%E2%9C%85 Confirmed 'Yes' to clear canvas!");                }            }, 100);        }        combinationCount = 0; // Reset counter        updateStatus();    }    function updateStatus() {        document.getElementById("craftedCount").innerText = craftedItems;    }    function autoCombine() {        if (!running) return;        const items = getDraggableItems();        totalItems = items.length;        if (items.length < 2) {            console.warn("%E2%9A%A0%EF%B8%8F Not enough items to combine!");            return;        }        const center = getCraftingPosition();                items.slice(0, 5).forEach(item => {            simulateDragAndDrop(item, center.x, center.y);            craftedItems++;            if (craftedItems >= 40) {                clearCanvas(); // Auto-clear after 40 crafts            }            updateStatus(); // Update the item status        });    }    function startAutoCrafting() {        if (!interval) {            interval = setInterval(autoCombine, 100); // 1 item per 100ms (0.100 seconds)        }    }    function stopAutoCrafting() {        clearInterval(interval);        interval = null;    }    createGUI();})();
+(function () {
+    console.log("🚀 Infinite Craft Auto-Combiner (Efficient Item Tracker) Activated!");
+
+    let combinationCount = 0;
+    let running = false;
+    let interval = null;
+    let totalItems = 0;
+    let craftedItems = 0;
+
+    // Create GUI
+    function createGUI() {
+        const gui = document.createElement("div");
+        gui.style.position = "fixed";
+        gui.style.top = "10px";
+        gui.style.right = "10px";
+        gui.style.padding = "10px";
+        gui.style.background = "rgba(0, 0, 0, 0.8)";
+        gui.style.color = "white";
+        gui.style.borderRadius = "10px";
+        gui.style.fontFamily = "Arial, sans-serif";
+        gui.style.zIndex = "9999";
+        gui.style.display = "flex";
+        gui.style.flexDirection = "column";
+        gui.style.gap = "10px";
+
+        // Start/Stop Button
+        const startButton = document.createElement("button");
+        startButton.innerText = "Start Auto-Crafter";
+        startButton.style.padding = "10px";
+        startButton.style.fontSize = "14px";
+        startButton.style.cursor = "pointer";
+        startButton.style.border = "none";
+        startButton.style.borderRadius = "5px";
+        startButton.style.background = "green";
+        startButton.style.color = "white";
+
+        startButton.onclick = function () {
+            running = !running;
+            if (running) {
+                startButton.innerText = "Stop Auto-Crafter";
+                startButton.style.background = "red";
+                startAutoCrafting();
+            } else {
+                startButton.innerText = "Start Auto-Crafter";
+                startButton.style.background = "green";
+                stopAutoCrafting();
+            }
+        };
+
+        // Instant Clear Button
+        const clearButton = document.createElement("button");
+        clearButton.innerText = "Clear Items Instantly";
+        clearButton.style.padding = "10px";
+        clearButton.style.fontSize = "14px";
+        clearButton.style.cursor = "pointer";
+        clearButton.style.border = "none";
+        clearButton.style.borderRadius = "5px";
+        clearButton.style.background = "blue";
+        clearButton.style.color = "white";
+
+        clearButton.onclick = function () {
+            clearCanvas();
+        };
+
+        // Items Crafted Display
+        const statusDisplay = document.createElement("div");
+        statusDisplay.style.color = "white";
+        statusDisplay.style.fontSize = "16px";
+        statusDisplay.innerHTML = `
+            <p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>
+        `;
+        
+        gui.appendChild(startButton);
+        gui.appendChild(clearButton);
+        gui.appendChild(statusDisplay);
+        document.body.appendChild(gui);
+    }
+
+    function getDraggableItems() {
+        return Array.from(document.querySelectorAll('.item'));
+    }
+
+    function getCraftingPosition() {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        return { x: screenWidth / 2, y: screenHeight / 2 };
+    }
+
+    function simulateDragAndDrop(item, targetX, targetY) {
+        const rect = item.getBoundingClientRect();
+        const startX = rect.left + rect.width / 2;
+        const startY = rect.top + rect.height / 2;
+
+        item.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: startX, clientY: startY }));
+        document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: targetX, clientY: targetY }));
+        document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: targetX, clientY: targetY }));
+
+        console.log(`🔄 Moved item to (${targetX}, ${targetY})`);
+    }
+
+    function clearCanvas() {
+        console.log("🧹 Clicking 'Clear All Items on the Canvas'...");
+
+        const clearButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Clear"));
+        if (clearButton) {
+            clearButton.click();
+            console.log("🖱️ Clicked Clear button!");
+
+            setTimeout(() => {
+                const yesButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Yes"));
+                if (yesButton) {
+                    yesButton.click();
+                    console.log("✅ Confirmed 'Yes' to clear canvas!");
+                }
+            }, 100);
+        }
+
+        combinationCount = 0; // Reset counter
+        updateStatus();
+    }
+
+    function updateStatus() {
+        document.getElementById("craftedCount").innerText = craftedItems;
+    }
+
+    function autoCombine() {
+        if (!running) return;
+
+        const items = getDraggableItems();
+        totalItems = items.length;
+
+        if (items.length < 2) {
+            console.warn("⚠️ Not enough items to combine!");
+            return;
+        }
+
+        const center = getCraftingPosition();
+        
+        items.slice(0, 5).forEach(item => {
+            simulateDragAndDrop(item, center.x, center.y);
+            craftedItems++;
+
+            if (craftedItems >= 40) {
+                clearCanvas(); // Auto-clear after 40 crafts
+            }
+            updateStatus(); // Update the item status
+        });
+    }
+
+    function startAutoCrafting() {
+        if (!interval) {
+            interval = setInterval(autoCombine, 100); // 1 item per 100ms (0.100 seconds)
+        }
+    }
+
+    function stopAutoCrafting() {
+        clearInterval(interval);
+        interval = null;
+    }
+
+    createGUI();
+})();
