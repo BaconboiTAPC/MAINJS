@@ -7,6 +7,7 @@
     let interval = null;
     let craftedItems = 0;
     let craftDelay = 5000; // Default delay (5 seconds)
+    let craftCooldown = 5000; // Cooldown between batches
 
     function createGUI() {
         const gui = document.createElement("div");
@@ -74,19 +75,6 @@
             document.getElementById("delayValue").innerText = `${craftDelay}ms`;
         };
 
-        // SoundCloud Song
-        const songContainer = document.createElement("div");
-        songContainer.innerHTML = `
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
-                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/256084722&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
-            </iframe>
-            <div style="font-size: 10px; color: #cccccc;">
-                <a href="https://soundcloud.com/hooverphonic" title="Hooverphonic" target="_blank" style="color: #cccccc; text-decoration: none;">Hooverphonic</a> · 
-                <a href="https://soundcloud.com/hooverphonic/mad-about-you-live-at-koningin" title="Mad About You (Live at Koningin Elisabethzaal 2012)" target="_blank" style="color: #cccccc; text-decoration: none;">Mad About You (Live at Koningin Elisabethzaal 2012)</a>
-            </div>
-        `;
-
-        gui.appendChild(songContainer);
         gui.appendChild(delaySliderContainer);
         gui.appendChild(startButton);
         gui.appendChild(clearButton);
@@ -145,7 +133,7 @@
         }
         const center = getCraftingPosition();
 
-        // **Only 5 items per delay now**
+        // **Only 5 items per delay now with cooldown**
         items.slice(0, 5).forEach((item, index) => {
             setTimeout(() => {
                 simulateDragAndDrop(item, center.x, center.y);
@@ -156,11 +144,14 @@
                 updateStatus();
             }, craftDelay * index);
         });
+
+        // Adding cooldown between batches of 5
+        setTimeout(autoCombine, craftCooldown);
     }
 
     function startAutoCrafting() {
         if (!interval) {
-            interval = setInterval(autoCombine, craftDelay);
+            interval = setInterval(autoCombine, craftCooldown);
         }
     }
 
@@ -171,3 +162,4 @@
 
     createGUI();
 })();
+
