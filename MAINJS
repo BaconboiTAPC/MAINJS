@@ -1,21 +1,17 @@
 (function () {
-    // Show popup message before running the script
-    alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS OF CRAFTS ↓\ncredited by BACONBOI ♡");
+    alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS ↓\ncredited by BACONBOI ♡");
 
     console.log("🚀 Infinite Craft Auto-Combiner (Efficient Item Tracker) Activated!");
 
-    let combinationCount = 0;
     let running = false;
     let interval = null;
-    let totalItems = 0;
     let craftedItems = 0;
 
-    // Create GUI
     function createGUI() {
         const gui = document.createElement("div");
         gui.style.position = "fixed";
         gui.style.top = "10px";
-        gui.style.left = "10px"; // Changed to left side
+        gui.style.left = "10px";
         gui.style.padding = "10px";
         gui.style.background = "rgba(0, 0, 0, 0.8)";
         gui.style.color = "white";
@@ -26,7 +22,6 @@
         gui.style.flexDirection = "column";
         gui.style.gap = "10px";
 
-        // Start/Stop Button
         const startButton = document.createElement("button");
         startButton.innerText = "Start Auto-Crafter";
         startButton.style.padding = "10px";
@@ -49,7 +44,6 @@
             }
         };
 
-        // Instant Clear Button
         const clearButton = document.createElement("button");
         clearButton.innerText = "Clear Items Instantly";
         clearButton.style.padding = "10px";
@@ -59,75 +53,41 @@
         clearButton.style.borderRadius = "5px";
         clearButton.style.background = "blue";
         clearButton.style.color = "white";
-        clearButton.onclick = function () {
-            clearCanvas();
-        };
+        clearButton.onclick = clearCanvas;
 
-        // Items Crafted Display
         const statusDisplay = document.createElement("div");
         statusDisplay.style.color = "white";
         statusDisplay.style.fontSize = "16px";
-        statusDisplay.innerHTML = `
-            <p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>
-        `;
+        statusDisplay.innerHTML = `<p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>`;
 
-        // Add arrow and credited by text
-        const arrowDiv = document.createElement("div");
-        arrowDiv.style.fontSize = "30px";
-        arrowDiv.innerHTML = "↓"; // Down arrow symbol
-
-        const creditedByDiv = document.createElement("div");
-        creditedByDiv.style.fontSize = "14px";
-        creditedByDiv.style.fontStyle = "italic";
-        creditedByDiv.innerHTML = "credited by BACONBOI ♡";
-
-        // Create the SoundCloud embeds for the songs
+        // SoundCloud song embeds
         const song1 = document.createElement("div");
-        song1.innerHTML = `
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1489983991&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-            <div style="font-size: 10px; color: #cccccc;">
-                <a href="https://soundcloud.com/phonkmp3" title="PHONK.MP3" target="_blank" style="color: #cccccc; text-decoration: none;">PHONK.MP3</a> · 
-                <a href="https://soundcloud.com/phonkmp3/on-the-jacket" title="ON THE JACKET" target="_blank" style="color: #cccccc; text-decoration: none;">ON THE JACKET</a>
-            </div>
-        `;
-        const song2 = document.createElement("div");
-        song2.innerHTML = `
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1938613391&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-            <div style="font-size: 10px; color: #cccccc;">
-                <a href="https://soundcloud.com/jair-zubizarreta" title="Jair Zubizarreta" target="_blank" style="color: #cccccc; text-decoration: none;">Jair Zubizarreta</a> · 
-                <a href="https://soundcloud.com/jair-zubizarreta/chisme-phonk-x-o-melhor-no-que" title="Chisme Phonk x O Melhor no Que Faz 3.0 (Full TikTok Remix) [made by purple drip boy].mp3" target="_blank" style="color: #cccccc; text-decoration: none;">Chisme Phonk x O Melhor no Que Faz 3.0 (Full TikTok Remix) [made by purple drip boy].mp3</a>
-            </div>
-        `;
-        const song3 = document.createElement("div");
-        song3.innerHTML = `
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1826472747&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-            <div style="font-size: 10px; color: #cccccc;">
-                <a href="https://soundcloud.com/tio-sam-858658914" title="Tio sam" target="_blank" style="color: #cccccc; text-decoration: none;">Tio sam</a> · 
-                <a href="https://soundcloud.com/tio-sam-858658914/phonk-ultra-vol-2-320-mp3" title="Phonk Ultra Vol 2 (320).mp3" target="_blank" style="color: #cccccc; text-decoration: none;">Phonk Ultra Vol 2 (320).mp3</a>
-            </div>
-        `;
-        const song4 = document.createElement("div");
-        song4.innerHTML = `
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2062752768&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-            <div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
-                <a href="https://soundcloud.com/trillcamm-306398935" title="TrillCamm" target="_blank" style="color: #cccccc; text-decoration: none;">TrillCamm</a> · 
-                <a href="https://soundcloud.com/trillcamm-306398935/classy-tenshi" title="Classy (tenshi)" target="_blank" style="color: #cccccc; text-decoration: none;">Classy (tenshi)</a>
-            </div>
-        `;
+        song1.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1489983991&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
 
-        // Store the songs in an array
-        const songs = [song1, song2, song3, song4];
+        const song2 = document.createElement("div");
+        song2.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1938613391&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const song3 = document.createElement("div");
+        song3.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1826472747&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const song4 = document.createElement("div");
+        song4.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2062752768&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const song5 = document.createElement("div");
+        song5.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/256084722&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const songs = [song1, song2, song3, song4, song5];
         let currentSongIndex = 0;
 
-        // Create song switching buttons (left & right arrows)
+        function updateSong() {
+            const songContainer = document.getElementById("songContainer");
+            songContainer.innerHTML = "";
+            songContainer.appendChild(songs[currentSongIndex]);
+        }
+
         const switchLeftButton = document.createElement("button");
         switchLeftButton.innerText = "<";
-        switchLeftButton.style.padding = "5px 10px";
-        switchLeftButton.style.fontSize = "18px";
         switchLeftButton.style.cursor = "pointer";
-        switchLeftButton.style.border = "none";
-        switchLeftButton.style.background = "transparent";
-        switchLeftButton.style.color = "white";
         switchLeftButton.onclick = function () {
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             updateSong();
@@ -135,38 +95,22 @@
 
         const switchRightButton = document.createElement("button");
         switchRightButton.innerText = ">";
-        switchRightButton.style.padding = "5px 10px";
-        switchRightButton.style.fontSize = "18px";
         switchRightButton.style.cursor = "pointer";
-        switchRightButton.style.border = "none";
-        switchRightButton.style.background = "transparent";
-        switchRightButton.style.color = "white";
         switchRightButton.onclick = function () {
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             updateSong();
         };
 
-        // Function to update the displayed song
-        function updateSong() {
-            const songContainer = document.getElementById("songContainer");
-            songContainer.innerHTML = "";
-            songContainer.appendChild(songs[currentSongIndex]);
-        }
-
-        // Song container for dynamic updating
         const songContainer = document.createElement("div");
         songContainer.id = "songContainer";
         songContainer.appendChild(songs[currentSongIndex]);
 
-        // Append all elements to the GUI
         gui.appendChild(songContainer);
         gui.appendChild(switchLeftButton);
         gui.appendChild(switchRightButton);
         gui.appendChild(startButton);
         gui.appendChild(clearButton);
         gui.appendChild(statusDisplay);
-        gui.appendChild(arrowDiv);
-        gui.appendChild(creditedByDiv);
 
         document.body.appendChild(gui);
     }
@@ -176,9 +120,7 @@
     }
 
     function getCraftingPosition() {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        return { x: screenWidth / 2, y: screenHeight / 2 };
+        return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     }
 
     function simulateDragAndDrop(item, targetX, targetY) {
@@ -192,20 +134,16 @@
     }
 
     function clearCanvas() {
-        console.log("🧹 Clicking 'Clear All Items on the Canvas'...");
+        console.log("🧹 Clearing all items...");
         const clearButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Clear"));
         if (clearButton) {
             clearButton.click();
-            console.log("🖤 Clicked Clear button!");
             setTimeout(() => {
                 const yesButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Yes"));
-                if (yesButton) {
-                    yesButton.click();
-                    console.log("✅ Confirmed 'Yes' to clear canvas!");
-                }
+                if (yesButton) yesButton.click();
             }, 100);
         }
-        combinationCount = 0; // Reset counter
+        craftedItems = 0;
         updateStatus();
     }
 
@@ -216,27 +154,18 @@
     function autoCombine() {
         if (!running) return;
         const items = getDraggableItems();
-        totalItems = items.length;
-        if (items.length < 2) {
-            console.warn("⚠️ Not enough items to combine!");
-            return;
-        }
+        if (items.length < 2) return;
         const center = getCraftingPosition();
-
-        items.slice(0, 5).forEach(item => {
+        items.slice(0, 10).forEach(item => {
             simulateDragAndDrop(item, center.x, center.y);
             craftedItems++;
-            if (craftedItems >= 40) {
-                clearCanvas(); // Auto-clear after 40 crafts
-            }
-            updateStatus(); // Update the item status
+            if (craftedItems >= 40) clearCanvas();
+            updateStatus();
         });
     }
 
     function startAutoCrafting() {
-        if (!interval) {
-            interval = setInterval(autoCombine, 100); // 1 item per 100ms (0.100 seconds)
-        }
+        if (!interval) interval = setInterval(autoCombine, 100);
     }
 
     function stopAutoCrafting() {
@@ -246,5 +175,6 @@
 
     createGUI();
 })();
+
 
 
