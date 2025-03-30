@@ -1,0 +1,171 @@
+(function () {
+    alert("HAVE FUN ENJOYING MY SCRIPT AND UNLOCK ALL OF THE CRAFTS ↓\ncredited by BACONBOI ♡");
+
+    console.log("🚀 Infinite Craft Auto-Combiner (Efficient Item Tracker) Activated!");
+
+    let running = false;
+    let interval = null;
+    let craftedItems = 0;
+
+    function createGUI() {
+        const gui = document.createElement("div");
+        gui.style.position = "fixed";
+        gui.style.top = "10px";
+        gui.style.left = "10px";
+        gui.style.padding = "10px";
+        gui.style.background = "rgba(0, 0, 0, 0.8)";
+        gui.style.color = "white";
+        gui.style.borderRadius = "10px";
+        gui.style.fontFamily = "Arial, sans-serif";
+        gui.style.zIndex = "9999";
+        gui.style.display = "flex";
+        gui.style.flexDirection = "column";
+        gui.style.gap = "10px";
+
+        const startButton = document.createElement("button");
+        startButton.innerText = "Start Auto-Crafter";
+        startButton.style.padding = "10px";
+        startButton.style.fontSize = "14px";
+        startButton.style.cursor = "pointer";
+        startButton.style.border = "none";
+        startButton.style.borderRadius = "5px";
+        startButton.style.background = "green";
+        startButton.style.color = "white";
+        startButton.onclick = function () {
+            running = !running;
+            if (running) {
+                startButton.innerText = "Stop Auto-Crafter";
+                startButton.style.background = "red";
+                startAutoCrafting();
+            } else {
+                startButton.innerText = "Start Auto-Crafter";
+                startButton.style.background = "green";
+                stopAutoCrafting();
+            }
+        };
+
+        const clearButton = document.createElement("button");
+        clearButton.innerText = "Clear Items Instantly";
+        clearButton.style.padding = "10px";
+        clearButton.style.fontSize = "14px";
+        clearButton.style.cursor = "pointer";
+        clearButton.style.border = "none";
+        clearButton.style.borderRadius = "5px";
+        clearButton.style.background = "blue";
+        clearButton.style.color = "white";
+        clearButton.onclick = clearCanvas;
+
+        const statusDisplay = document.createElement("div");
+        statusDisplay.style.color = "white";
+        statusDisplay.style.fontSize = "16px";
+        statusDisplay.innerHTML = `<p>Crafted: <span id="craftedCount">0</span> / 3,470,353+</p>`;
+
+        // SoundCloud playlist embeds
+        const playlist1 = document.createElement("div");
+        playlist1.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1991646036&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const playlist2 = document.createElement("div");
+        playlist2.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1958718125&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const playlist3 = document.createElement("div");
+        playlist3.innerHTML = `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1536594679&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
+
+        const playlists = [playlist1, playlist2, playlist3];
+        let currentPlaylistIndex = 0;
+
+        function updatePlaylist() {
+            const playlistContainer = document.getElementById("playlistContainer");
+            playlistContainer.innerHTML = "";
+            playlistContainer.appendChild(playlists[currentPlaylistIndex]);
+        }
+
+        const switchLeftButton = document.createElement("button");
+        switchLeftButton.innerText = "<";
+        switchLeftButton.style.cursor = "pointer";
+        switchLeftButton.onclick = function () {
+            currentPlaylistIndex = (currentPlaylistIndex - 1 + playlists.length) % playlists.length;
+            updatePlaylist();
+        };
+
+        const switchRightButton = document.createElement("button");
+        switchRightButton.innerText = ">";
+        switchRightButton.style.cursor = "pointer";
+        switchRightButton.onclick = function () {
+            currentPlaylistIndex = (currentPlaylistIndex + 1) % playlists.length;
+            updatePlaylist();
+        };
+
+        const playlistContainer = document.createElement("div");
+        playlistContainer.id = "playlistContainer";
+        playlistContainer.appendChild(playlists[currentPlaylistIndex]);
+
+        gui.appendChild(playlistContainer);
+        gui.appendChild(switchLeftButton);
+        gui.appendChild(switchRightButton);
+        gui.appendChild(startButton);
+        gui.appendChild(clearButton);
+        gui.appendChild(statusDisplay);
+
+        document.body.appendChild(gui);
+    }
+
+    function getDraggableItems() {
+        return Array.from(document.querySelectorAll('.item'));
+    }
+
+    function getCraftingPosition() {
+        return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    }
+
+    function simulateDragAndDrop(item, targetX, targetY) {
+        const rect = item.getBoundingClientRect();
+        const startX = rect.left + rect.width / 2;
+        const startY = rect.top + rect.height / 2;
+        item.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: startX, clientY: startY }));
+        document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: targetX, clientY: targetY }));
+        document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: targetX, clientY: targetY }));
+        console.log(`🔄 Moved item to (${targetX}, ${targetY})`);
+    }
+
+    function clearCanvas() {
+        console.log("🧹 Clearing all items...");
+        const clearButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Clear"));
+        if (clearButton) {
+            clearButton.click();
+            setTimeout(() => {
+                const yesButton = [...document.querySelectorAll('button')].find(btn => btn.innerText.includes("Yes"));
+                if (yesButton) yesButton.click();
+            }, 100);
+        }
+        craftedItems = 0;
+        updateStatus();
+    }
+
+    function updateStatus() {
+        document.getElementById("craftedCount").innerText = craftedItems;
+    }
+
+    function autoCombine() {
+        if (!running) return;
+        const items = getDraggableItems();
+        if (items.length < 2) return;
+        const center = getCraftingPosition();
+        items.slice(0, 5).forEach(item => {
+            simulateDragAndDrop(item, center.x, center.y);
+            craftedItems++;
+            if (craftedItems >= 40) clearCanvas();
+            updateStatus();
+        });
+    }
+
+    function startAutoCrafting() {
+        if (!interval) interval = setInterval(autoCombine, 5000); // Changed delay to 5 seconds
+    }
+
+    function stopAutoCrafting() {
+        clearInterval(interval);
+        interval = null;
+    }
+
+    createGUI();
+})();
